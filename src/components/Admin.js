@@ -13,13 +13,13 @@ const Admin = () => {
 
     // Fetch sections
     useEffect(() => {
-        axios.get('http://localhost:5000/sections')
+        axios.get('https://queue-442706.de.r.appspot.com/sections')
             .then(res => setSections(res.data))
             .catch(err => setError('Error fetching sections: ' + err.message));
     }, []);
 
     const addSection = () => {
-        axios.post('http://localhost:5000/sections', { name: sectionName })
+        axios.post('https://queue-442706.de.r.appspot.com/sections', { name: sectionName })
             .then(res => {
                 setSections([...sections, res.data]);
                 setSectionName('');
@@ -28,7 +28,7 @@ const Admin = () => {
     };
 
     const deleteSection = (id) => {
-        axios.delete(`http://localhost:5000/sections/${id}`)
+        axios.delete(`https://queue-442706.de.r.appspot.com/sections/${id}`)
             .then(() => {
                 setSections(sections.filter(s => s._id !== id));
             })
@@ -46,7 +46,7 @@ const Admin = () => {
     };
 
     const saveEdit = (id) => {
-        axios.put(`http://localhost:5000/sections/${id}`, { name: editingName })
+        axios.put(`https://queue-442706.de.r.appspot.com/sections/${id}`, { name: editingName })
             .then(() => {
                 const updatedSections = sections.map(section =>
                     section._id === id ? { ...section, name: editingName } : section
