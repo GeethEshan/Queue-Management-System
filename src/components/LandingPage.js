@@ -49,10 +49,16 @@ const LandingPage = () => {
     <div className="landing-container">
       <h1>Welcome to the Queue Management System</h1>
       <div className="landing-links-container">
-        <Link to="/admin" className="landing-link">Admin Panel</Link>
-        <Link to="/receptionist" className="landing-link">Receptionist</Link>
-        <Link to="/dashboard" className="landing-link">Queue Dashboard</Link>
-        
+        <Link to="/admin" className="landing-link">
+          Admin Panel
+        </Link>
+        <Link to="/receptionist" className="landing-link">
+          Receptionist
+        </Link>
+        <Link to="/dashboard" className="landing-link">
+          Queue Dashboard
+        </Link>
+
         {sections.length > 0 ? (
           sections.map((section) => (
             <Link 
