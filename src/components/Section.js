@@ -4,15 +4,14 @@ import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import './Section.css';
 
-
 const socket = io.connect("https://queue-442706.de.r.appspot.com");
 
 const Section = () => {
   const { section } = useParams(); // Get the section name from the URL
   const [queue, setQueue] = useState([]);
 
+  // Fetch the queue for the specific section dynamically
   useEffect(() => {
-    // Fetch the queue for the specific section dynamically
     const fetchQueue = async () => {
       try {
         const res = await axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`);
@@ -44,27 +43,26 @@ const Section = () => {
     // Listen for section deletion event
     socket.on('sectionDeleted', (sectionId) => {
       if (sectionId === section) {
-        // Handle the section being deleted (e.g., redirect or show a message)
         alert(`The section "${section}" has been deleted.`);
+        // Optionally redirect or update the UI here
       }
     });
 
     // Listen for section update event
     socket.on('sectionUpdated', (updatedSection) => {
       if (updatedSection.name === section) {
-        // Handle the section being updated (e.g., update UI, fetch updated queue)
         alert(`The section "${section}" has been updated.`);
         axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`).then(res => setQueue(res.data));
       }
     });
 
-    // Clean up socket listeners on component unmount
+    // Clean up socket listeners on component unmount or when section changes
     return () => {
       socket.off('queue-updated');
       socket.off('sectionDeleted');
       socket.off('sectionUpdated');
     };
-  }, [section, queue]);
+  }, [section]); // Remove queue from dependencies to avoid re-fetching unnecessarily
 
   return (
     <div className="section-container">
