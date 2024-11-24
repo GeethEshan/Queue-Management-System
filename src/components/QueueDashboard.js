@@ -10,7 +10,7 @@ const QueueDashboard = () => {
 
   const fetchQueues = async () => {
     try {
-      const res = await axios.get('https://queue-442706.de.r.appspot.com0/queues');
+      const res = await axios.get('https://queue-442706.de.r.appspot.com/queues');
       const groupedQueues = res.data.reduce((acc, queue) => {
         if (!acc[queue.section]) acc[queue.section] = [];
         acc[queue.section].push(queue);
@@ -50,6 +50,7 @@ const QueueDashboard = () => {
       );
 
       setTimeout(async () => {
+        // Re-fetch queues after fade-out animation
         const res = await axios.get('https://queue-442706.de.r.appspot.com/queues');
         const groupedQueues = res.data.reduce((acc, queue) => {
           if (!acc[queue.section]) acc[queue.section] = [];
@@ -63,7 +64,7 @@ const QueueDashboard = () => {
         }));
 
         setQueues(formattedQueues);
-      }, 500); // Match animation duration
+      }, 500); // Ensure delay matches animation duration
     });
 
     return () => socket.off('queue-updated');
@@ -83,7 +84,7 @@ const QueueDashboard = () => {
                     key={customer._id}
                     className={`customerItem ${index === 0 ? 'serving' : ''} ${customer.fadeOut ? 'fadeOut' : ''}`}
                   >
-                    {/* Skip the number for the first item, and just display membership number */}
+                    {/* Display "Serving" for the first item */}
                     {index === 0 ? '(Serving)' : `${index + 1}.`} {customer.membershipNumber}
                   </li>
                 ))
