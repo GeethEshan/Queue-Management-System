@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import './Receptionist.css'; // Add this line to import the CSS
 
 // Connect to the socket server
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://queue-442706.de.r.appspot.com');
 
 const Receptionist = () => {
   const [membershipNumber, setMembershipNumber] = useState('');
@@ -18,7 +18,7 @@ const Receptionist = () => {
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/sections');
+        const res = await axios.get('https://queue-442706.de.r.appspot.com/sections');
         setSections(res.data);
       } catch (err) {
         console.error('Error fetching sections:', err);
@@ -31,7 +31,7 @@ const Receptionist = () => {
 
   const fetchQueues = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/queues');
+      const res = await axios.get('https://queue-442706.de.r.appspot.com/queues');
       const groupedQueues = res.data.reduce((acc, queue) => {
         if (!acc[queue.section]) acc[queue.section] = [];
         acc[queue.section].push(queue);
@@ -72,7 +72,7 @@ const Receptionist = () => {
       return;
     }
     try {
-      await axios.post('http://localhost:5000/queue', { membershipNumber, section });
+      await axios.post('https://queue-442706.de.r.appspot.com/queue', { membershipNumber, section });
       setMembershipNumber('');
       setSection('');
       setSuccess('Customer added to queue successfully!');
