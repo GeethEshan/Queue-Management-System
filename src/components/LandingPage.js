@@ -11,7 +11,7 @@ const LandingPage = () => {
     // Fetch initial sections
     const fetchSections = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/sections');
+        const response = await axios.get('https://queue-442706.de.r.appspot.com/sections');
         setSections(response.data);
       } catch (error) {
         console.error('Error fetching sections:', error);
@@ -21,7 +21,7 @@ const LandingPage = () => {
     fetchSections();
 
     // Setup Socket.IO for real-time updates
-    const socket = io('http://localhost:5000');
+    const socket = io('https://queue-442706.de.r.appspot.com');
 
     socket.on('section-added', (newSection) => {
       setSections((prev) => [...prev, newSection]);
