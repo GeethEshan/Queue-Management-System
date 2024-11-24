@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import './Section.css';
 
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://queue-442706.de.r.appspot.com");
 
 const Section = () => {
   const { section } = useParams(); // Get the section name from the URL
@@ -15,7 +15,7 @@ const Section = () => {
     // Fetch the queue for the specific section dynamically
     const fetchQueue = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/queue/${section}`);
+        const res = await axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`);
         setQueue(res.data);
       } catch (err) {
         console.error('Error fetching queue:', err);
@@ -27,7 +27,7 @@ const Section = () => {
 
   const handleFinish = (id) => {
     // Delete the customer from the queue
-    axios.delete(`http://localhost:5000/queue/${id}`).then(() => {
+    axios.delete(`https://queue-442706.de.r.appspot.com/queue/${id}`).then(() => {
       socket.emit('queue-updated', { section });
       setQueue(queue.filter(item => item._id !== id)); // Remove customer from local queue
     });
@@ -37,7 +37,7 @@ const Section = () => {
     // Listen for queue updates through socket.io
     socket.on('queue-updated', ({ section: updatedSection }) => {
       if (updatedSection === section) {
-        axios.get(`http://localhost:5000/queue/${section}`).then(res => setQueue(res.data));
+        axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`).then(res => setQueue(res.data));
       }
     });
 
@@ -54,7 +54,7 @@ const Section = () => {
       if (updatedSection.name === section) {
         // Handle the section being updated (e.g., update UI, fetch updated queue)
         alert(`The section "${section}" has been updated.`);
-        axios.get(`http://localhost:5000/queue/${section}`).then(res => setQueue(res.data));
+        axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`).then(res => setQueue(res.data));
       }
     });
 
