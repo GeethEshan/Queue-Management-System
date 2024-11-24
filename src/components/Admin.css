@@ -1,0 +1,149 @@
+.admin-container {
+    background-image: url('../images/bga.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.sections-heading {
+    font-size: 24px;
+    margin: 20px 0;
+    color: white;
+}
+
+.add-section-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-input {
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 250px;
+}
+
+.add-btn {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+.sections-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.sections-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-left: 40px;
+}
+
+.sections-list input[type="text"] {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.edit-btn {
+    background: linear-gradient(45deg, #34c759, #1e8732);
+    color: white;
+    margin-left: 10px;
+}
+
+.edit-btn:hover {
+    background: linear-gradient(45deg, #1e8732, #34c759);
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #ff3b30, #c91f16);
+    color: white;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(45deg, #c91f16, #ff3b30);
+}
+
+input[type="text"], input[type="button"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+}
+
+.current-page {
+    font-size: 18px;
+    color: white;
+    margin: 0 10px;
+}
