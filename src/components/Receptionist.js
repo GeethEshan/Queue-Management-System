@@ -3,9 +3,10 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import './Receptionist.css'; // Add this line to import the CSS
 
-// Connect to the socket server
-const socket = io.connect('https://queue-442706.de.r.appspot.com');
+// Connect to the socket server on Koyeb
+const socket = io.connect('https://visiting-gilda-sliitq-471f8cef.koyeb.app');
 
+// Receptionist Component
 const Receptionist = () => {
   const [membershipNumber, setMembershipNumber] = useState('');
   const [section, setSection] = useState('');
@@ -18,7 +19,7 @@ const Receptionist = () => {
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const res = await axios.get('https://queue-442706.de.r.appspot.com/sections');
+        const res = await axios.get('https://visiting-gilda-sliitq-471f8cef.koyeb.app/sections');
         setSections(res.data);
       } catch (err) {
         console.error('Error fetching sections:', err);
@@ -31,7 +32,7 @@ const Receptionist = () => {
 
   const fetchQueues = async () => {
     try {
-      const res = await axios.get('https://queue-442706.de.r.appspot.com/queues');
+      const res = await axios.get('https://visiting-gilda-sliitq-471f8cef.koyeb.app/queues');
       const groupedQueues = res.data.reduce((acc, queue) => {
         if (!acc[queue.section]) acc[queue.section] = [];
         acc[queue.section].push(queue);
@@ -72,7 +73,7 @@ const Receptionist = () => {
       return;
     }
     try {
-      await axios.post('https://queue-442706.de.r.appspot.com/queue', { membershipNumber, section });
+      await axios.post('https://visiting-gilda-sliitq-471f8cef.koyeb.app/queue', { membershipNumber, section });
       setMembershipNumber('');
       setSection('');
       setSuccess('Customer added to queue successfully!');
