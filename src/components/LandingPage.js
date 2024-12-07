@@ -11,7 +11,7 @@ const LandingPage = () => {
     // Fetch initial sections
     const fetchSections = async () => {
       try {
-        const response = await axios.get('https://queue-442706.de.r.appspot.com/sections');
+        const response = await axios.get('https://visiting-gilda-sliitq-471f8cef.koyeb.app/sections');
         setSections(response.data);
       } catch (error) {
         console.error('Error fetching sections:', error);
@@ -21,7 +21,7 @@ const LandingPage = () => {
     fetchSections();
 
     // Setup Socket.IO for real-time updates
-    const socket = io('https://queue-442706.de.r.appspot.com');
+    const socket = io('https://visiting-gilda-sliitq-471f8cef.koyeb.app');
 
     socket.on('section-added', (newSection) => {
       setSections((prev) => [...prev, newSection]);
