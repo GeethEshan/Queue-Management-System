@@ -127,19 +127,33 @@ const Admin = () => {
                 ))}
             </ul>
 
-            <div className="pagination">
-                {currentPage > 1 && (
-                    <button className="pagination-btn" onClick={handlePreviousPage}>
-                        Previous
-                    </button>
-                )}
-                <span className="current-page">Page {currentPage} of {totalPages}</span>
-                {currentPage < totalPages && (
-                    <button className="pagination-btn" onClick={handleNextPage}>
-                        Next
-                    </button>
-                )}
-            </div>
+            <div className="pagination" style={{ color: 'white' }}>
+  {currentPage > 1 && (
+    <button
+      className="pagination-btn"
+      onClick={handlePreviousPage}
+      style={{ color: 'white', backgroundColor: 'transparent', border: 'none' }}
+    >
+      Previous
+    </button>
+  )}
+  <span
+    className="current-page"
+    style={{ color: 'white' }}
+  >
+    Page {currentPage} of {totalPages}
+  </span>
+  {currentPage < totalPages && (
+    <button
+      className="pagination-btn"
+      onClick={handleNextPage}
+      style={{ color: 'white', backgroundColor: 'transparent', border: 'none' }}
+    >
+      Next
+    </button>
+  )}
+</div>
+
         </div>
     );
 };

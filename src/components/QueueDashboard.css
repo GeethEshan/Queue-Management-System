@@ -1,7 +1,7 @@
 .container {
   text-align: center;
   padding: 20px;
-  background-image: url('../images/bg.jpg'); /* Path to bg.jpg from components */
+  background-image: url('../images/bg1.jpg'); /* Path to bg.jpg from components */
   background-size: cover; /* Ensures the image covers the entire container */
   background-position: center; /* Centers the background image */
   height: 100vh; /* Makes the container take full viewport height */

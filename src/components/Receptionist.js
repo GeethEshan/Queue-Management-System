@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
-import './Receptionist.css'; // Add this line to import the CSS
+import './Receptionist.css';
 
 // Connect to the socket server
 const socket = io.connect('http://localhost:5000');
@@ -13,7 +13,9 @@ const Receptionist = () => {
   const [queues, setQueues] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [customerData, setCustomerData] = useState(null);
   const [pagination, setPagination] = useState({});
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
   useEffect(() => {
     const fetchSections = async () => {
@@ -44,9 +46,9 @@ const Receptionist = () => {
       }));
 
       setQueues(formattedQueues);
-      // Initialize pagination for each section
+
       const initialPagination = formattedQueues.reduce((acc, group) => {
-        acc[group.section] = 1; // Start from page 1 for each section
+        acc[group.section] = 1;
         return acc;
       }, {});
       setPagination(initialPagination);
@@ -67,24 +69,50 @@ const Receptionist = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    if (!membershipNumber || !section) {
-      setError('Please enter a membership number and select a section.');
+
+    if (!membershipNumber) {
+      setError('Please enter a membership number.');
       return;
     }
+
+    try {
+      const res = await axios.get(`http://localhost:5000/customers/${membershipNumber}`);
+      if (res.data) {
+        setCustomerData(res.data);
+        setError('');
+        setShowModal(true); // Show the modal when the customer is found
+      } else {
+        setCustomerData(null);
+        setError('No such customer.');
+        setTimeout(() => setError(''), 3000);
+      }
+    } catch (err) {
+      console.error('Error fetching customer:', err);
+      setError('No such customer.');
+      setTimeout(() => setError(''), 3000);
+    }
+  };
+
+  const handleQueueSubmit = async () => {
+    if (!customerData || !section) {
+      setError('Please ensure customer data is loaded and a section is selected.');
+      return;
+    }
+
     try {
       await axios.post('http://localhost:5000/queue', { membershipNumber, section });
-      setMembershipNumber('');
-      setSection('');
       setSuccess('Customer added to queue successfully!');
       fetchQueues();
+      setShowModal(false); // Close the modal after adding to the queue
 
-      // Hide success message after 2 seconds
-      setTimeout(() => {
-        setSuccess('');
-      }, 2000);
+      // Reset membership number and section input fields
+      setMembershipNumber('');
+      setSection('');
+
+      setTimeout(() => setSuccess(''), 2000);
     } catch (err) {
       console.error('Error adding to queue:', err);
-      setError('Failed to add customer to queue. Please try again.');
+      setError('Failed to add customer to queue.');
     }
   };
 
@@ -99,7 +127,6 @@ const Receptionist = () => {
     });
   };
 
-  // Helper function to get the current section's queues for the current page
   const getPageQueues = (section) => {
     const currentPage = pagination[section] || 1;
     const startIndex = (currentPage - 1) * 7;
@@ -110,29 +137,64 @@ const Receptionist = () => {
   return (
     <div className="admin-container">
       <h1>Receptionist Panel</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="input-form">
         <input
           type="text"
           placeholder="Enter Membership Number"
           value={membershipNumber}
           onChange={(e) => setMembershipNumber(e.target.value)}
+          className="membership-input"
         />
-        <select
-          value={section}
-          onChange={(e) => setSection(e.target.value)}
-        >
-          <option value="">Select Section</option>
-          {sections.map((sec) => (
-            <option key={sec._id} value={sec.name}>
-              {sec.name}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Add to Queue</button>
+        <button type="submit" className="enter-button">Enter</button>
       </form>
 
-      {success && <p className="success">{success}</p>}
       {error && <p className="error">{error}</p>}
+      {success && <p className="success">{success}</p>}
+
+      {/* Modal for displaying customer details and actions */}
+      {showModal && customerData && (
+        <div className="modal">
+          <div className="modal-content" style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '5px', width: '400px', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.8rem', fontWeight: 'bold', marginBottom: '20px', color: 'black' }}>Customer Details</h3>
+            <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Name: <span style={{ fontWeight: 'normal' }}>{customerData.name}</span></p>
+            <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Hospital: <span style={{ fontWeight: 'normal' }}>{customerData.hospital}</span></p>
+            <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Designation: <span style={{ fontWeight: 'normal' }}>{customerData.designation}</span></p>
+
+            <div style={{ textAlign: 'left', marginTop: '10px' }}>
+              <select
+                value={section}
+                onChange={(e) => setSection(e.target.value)}
+                style={{ padding: '10px', fontSize: '16px', borderRadius: '4px', border: '1px solid #ccc', width: '100%' }}
+              >
+                <option value="">Select Section</option>
+                {sections.map((sec) => (
+                  <option key={sec._id} value={sec.name}>
+                    {sec.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ marginTop: '20px' }}>
+              <button
+                onClick={handleQueueSubmit}
+                style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}
+              >
+                Add to Queue
+              </button>
+            </div>
+
+            <div style={{ marginTop: '10px' }}>
+              <button
+                onClick={() => setShowModal(false)}
+                style={{ padding: '10px 20px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <h2>All Queues</h2>
       <div className="queues-container">
@@ -148,7 +210,9 @@ const Receptionist = () => {
 
             return (
               <div key={queueGroup.section} className="queue-group">
-                <h3 style={{ color: 'black' }}>{queueGroup.section}</h3>
+                 <h3 style={{ color: 'black', textAlign: 'center' }}>
+            {queueGroup.section}
+          </h3>
                 <ul>
                   {customersForPage.length > 0 ? (
                     customersForPage.map((item) => (
@@ -162,19 +226,21 @@ const Receptionist = () => {
                 </ul>
                 <div className="pagination-controls">
                   {showPrevButton && (
-                    <button
-                      onClick={() => handlePagination(queueGroup.section, 'prev')}
-                    >
-                      Previous
-                    </button>
+                    <button onClick={() => handlePagination(queueGroup.section, 'prev')}>Previous</button>
                   )}
-                  <span> {currentPage}</span>
+                  <span
+  style={{
+    display: 'block',
+    textAlign: 'center',
+    color: 'black',
+    margin: '0 auto'
+  }}
+>
+ Page {currentPage}
+</span>
+
                   {showNextButton && (
-                    <button
-                      onClick={() => handlePagination(queueGroup.section, 'next')}
-                    >
-                      Next
-                    </button>
+                    <button onClick={() => handlePagination(queueGroup.section, 'next')}>Next</button>
                   )}
                 </div>
                 <hr />

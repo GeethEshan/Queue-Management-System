@@ -8,7 +8,7 @@
     min-height: 100vh;
     text-align: center;
     padding: 20px;
-    background-image: url('../images/bgs.jpg'); /* Add background image */
+    background-image: url('../images/bgs.png'); /* Add background image */
     background-size: cover; /* Ensure the image covers the whole container */
     background-position: center center; /* Center the image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
@@ -16,13 +16,13 @@
   
   .section-heading {
     font-size: 2.5rem;
-    color: white;
+    color: black;
     margin-bottom: 20px;
   }
   
   .queue-heading {
     font-size: 2rem;
-    color: white;
+    color: black;
     margin-bottom: 20px;
   }
   
@@ -30,6 +30,7 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+   
   }
   
   li {
