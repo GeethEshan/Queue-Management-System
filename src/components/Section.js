@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import './Section.css';
 
-const socket = io.connect("https://queue-442706.de.r.appspot.com");
+// Update to use the Koyeb app URL
+const socket = io.connect("https://visiting-gilda-sliitq-471f8cef.koyeb.app/");
 
 const Section = () => {
   const { section } = useParams(); // Get the section name from the URL
@@ -14,7 +15,7 @@ const Section = () => {
   useEffect(() => {
     const fetchQueue = async () => {
       try {
-        const res = await axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`);
+        const res = await axios.get(`https://visiting-gilda-sliitq-471f8cef.koyeb.app/queue/${section}`);
         setQueue(res.data);
       } catch (err) {
         console.error('Error fetching queue:', err);
@@ -26,7 +27,7 @@ const Section = () => {
 
   const handleFinish = (id) => {
     // Delete the customer from the queue
-    axios.delete(`https://queue-442706.de.r.appspot.com/queue/${id}`).then(() => {
+    axios.delete(`https://visiting-gilda-sliitq-471f8cef.koyeb.app/queue/${id}`).then(() => {
       socket.emit('queue-updated', { section });
       setQueue(queue.filter(item => item._id !== id)); // Remove customer from local queue
     });
@@ -36,7 +37,7 @@ const Section = () => {
     // Listen for queue updates through socket.io
     socket.on('queue-updated', ({ section: updatedSection }) => {
       if (updatedSection === section) {
-        axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`).then(res => setQueue(res.data));
+        axios.get(`https://visiting-gilda-sliitq-471f8cef.koyeb.app/queue/${section}`).then(res => setQueue(res.data));
       }
     });
 
@@ -52,7 +53,7 @@ const Section = () => {
     socket.on('sectionUpdated', (updatedSection) => {
       if (updatedSection.name === section) {
         alert(`The section "${section}" has been updated.`);
-        axios.get(`https://queue-442706.de.r.appspot.com/queue/${section}`).then(res => setQueue(res.data));
+        axios.get(`https://visiting-gilda-sliitq-471f8cef.koyeb.app/queue/${section}`).then(res => setQueue(res.data));
       }
     });
 
