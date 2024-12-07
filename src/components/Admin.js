@@ -14,7 +14,7 @@ const Admin = () => {
   // Fetch sections
   useEffect(() => {
     axios
-      .get('https://queue-442706.de.r.appspot.com/sections')
+      .get('https://visiting-gilda-sliitq-471f8cef.koyeb.app/sections')
       .then((res) => setSections(res.data))
       .catch((err) => setError('Error fetching sections: ' + err.message));
   }, []);
@@ -22,7 +22,7 @@ const Admin = () => {
   // Add section
   const addSection = () => {
     axios
-      .post('https://queue-442706.de.r.appspot.com/sections', { name: sectionName })
+      .post('https://visiting-gilda-sliitq-471f8cef.koyeb.app/sections', { name: sectionName })
       .then((res) => {
         setSections([...sections, res.data]);
         setSectionName('');
@@ -33,7 +33,7 @@ const Admin = () => {
   // Delete section
   const deleteSection = (id) => {
     axios
-      .delete(`https://queue-442706.de.r.appspot.com/sections/${id}`)
+      .delete(`https://visiting-gilda-sliitq-471f8cef.koyeb.app/sections/${id}`)
       .then(() => {
         setSections(sections.filter((s) => s._id !== id));
       })
@@ -55,7 +55,7 @@ const Admin = () => {
   // Save edited section
   const saveEdit = (id) => {
     axios
-      .put(`https://queue-442706.de.r.appspot.com/sections/${id}`, { name: editingName })
+      .put(`https://visiting-gilda-sliitq-471f8cef.koyeb.app/sections/${id}`, { name: editingName })
       .then(() => {
         const updatedSections = sections.map((section) =>
           section._id === id ? { ...section, name: editingName } : section
